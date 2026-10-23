@@ -6,9 +6,10 @@ import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
+
 import theme from "./app/MaterialTheme";
-import { BrowserRouter as Route } from "react-router-dom";
 import "./css/index.css";
+import { BrowserRouter as Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
