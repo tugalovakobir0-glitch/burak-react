@@ -18,7 +18,7 @@ export default function OtherNavbar() {
               <NavLink to="/">Home</NavLink>
             </Box>
             <Box className={"hover-line"}>
-              <NavLink to="/product" activeClassName={"underline"}>
+              <NavLink to="/products" activeClassName={"underline"}>
                 Product
               </NavLink>
             </Box>
