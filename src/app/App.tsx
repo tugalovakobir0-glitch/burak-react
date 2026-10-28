@@ -4,6 +4,7 @@ import { Link, Route, Switch, useLocation } from "react-router-dom";
 import HomePage from "./screens/homePage";
 import ProductsPage from "./screens/productsPage";
 import OrdersPage from "./screens/ordersPage";
+import UserPage from "./screens/userPage";
 
 import HelpPage from "./screens/helpPage";
 import HomeNavbar from "./components/headers/HomeNavbar";
@@ -12,7 +13,7 @@ import Footer from "./components/footer";
 import "../css/navbar.css";
 import "../css/app.css";
 import "../css/footer.css";
-import { MemberPage } from "./screens/Users";
+import "../css/home.css";
 
 function App() {
   const location = useLocation();
@@ -27,7 +28,7 @@ function App() {
           <OrdersPage />
         </Route>
         <Route path="/member-page">
-          <MemberPage />
+          <UserPage />
         </Route>
         <Route path="/help">
           <HelpPage />
