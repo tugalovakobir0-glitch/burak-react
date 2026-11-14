@@ -25,10 +25,9 @@ const popularDishesRetriever = createSelector(
 );
 
 export default function HomePage() {
-  useEffect(() => {
-    const { setPopularDishes } = actionDispatch(useDispatch());
-    const { popularDishes } = useSelector(popularDishesRetriever);
-  }, []);
+  const { setPopularDishes } = actionDispatch(useDispatch());
+  const { popularDishes } = useSelector(popularDishesRetriever);
+  useEffect(() => {}, []);
   return (
     <div className={"home-page"}>
       <Statistics />
