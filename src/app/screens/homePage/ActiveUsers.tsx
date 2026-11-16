@@ -4,14 +4,20 @@ import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
 import { CssVarsProvider } from "@mui/joy/styles";
 
-const activeUsers = [
-  { name: "Martin", imagePath: "/img/martin.webp" },
-  { name: "Justin", imagePath: "/img/justin.webp" },
-  { name: "Rose", imagePath: "/img/rose.webp" },
-  { name: "Nusret", imagePath: "/img/nusret.webp" },
-];
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+
+import { retrieveTopUsers } from "./selector";
+
+import { serverApi } from "../../../lib/config";
+import { Member } from "../../../lib/types/member";
+
+const topUsersRetriever = createSelector(retrieveTopUsers, (topUsers) => ({
+  topUsers,
+}));
 
 export default function ActiveUsers() {
+  const { topUsers } = useSelector(topUsersRetriever);
   return (
     <div className="active-users-frame">
       <Container>
@@ -20,21 +26,18 @@ export default function ActiveUsers() {
 
           <Stack className="cards-frame">
             <CssVarsProvider>
-              {activeUsers.length !== 0 ? (
-                activeUsers.map((user, index) => {
+              {topUsers.length !== 0 ? (
+                topUsers.map((user: Member) => {
+                  const imagePath = `${serverApi}/${user.memberImage}`;
                   return (
-                    <Card key={index} className="card">
+                    <Card key={user._id} className="card">
                       <Box className="card-image-box">
-                        <img
-                          className="user-img "
-                          src={user.imagePath}
-                          alt=""
-                        />
+                        <img className="user-img " src={imagePath} alt="" />
                       </Box>
 
                       <Box className="user-name-box">
                         <Typography className="user-name">
-                          {user.name}
+                          {user.memberNick}
                         </Typography>
                       </Box>
                     </Card>
