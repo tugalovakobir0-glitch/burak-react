@@ -34,7 +34,7 @@ export default function HomePage() {
     const product = new ProductService();
     //** Popular Dishes  **/
     product
-      .getProduct({
+      .getProducts({
         page: 1,
         limit: 4,
         order: "productViews",
@@ -48,7 +48,7 @@ export default function HomePage() {
       });
     //** New Dishes  **/
     product
-      .getProduct({
+      .getProducts({
         page: 1,
         limit: 4,
         order: "createdAt",
