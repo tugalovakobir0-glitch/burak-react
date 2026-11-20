@@ -3,10 +3,10 @@ import { Modal, Backdrop, Fade, Fab, Stack, TextField } from "@mui/material";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
 import { T } from "../../../lib/types/common";
-import { Messages } from "../../../lib/config";
-import { MemberInput } from "../../../lib/types/member";
-import MemberService from "../../services/MemberService";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { Messages } from "../../../lib/config";
+import { LoginInput, MemberInput } from "../../../lib/types/member";
+import MemberService from "../../services/MemberService";
 
 const ModalImg = styled.img`
   width: 62%;
@@ -44,11 +44,13 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
   const hentleSignupKeyDown = (e: T) => {
     if (e.key === "Enter" && signupOpen) {
-      hendlesignupRequest().then();
+      hendleSignupRequest().then();
+    } else if (e.key === "Enter" && loginOpen) {
+      hendleLoginRequest().then();
     }
   };
 
-  const hendlesignupRequest = async () => {
+  const hendleSignupRequest = async () => {
     try {
       console.log("inputs:", memberNick, memberPassword, memberPhone);
       const isFulfill =
@@ -68,6 +70,26 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     } catch (err) {
       console.log("Error", err);
       handleSignupClose();
+      sweetErrorHandling(err).then();
+    }
+  };
+  const hendleLoginRequest = async () => {
+    try {
+      const isFulfill = memberNick !== "" && memberPassword !== "";
+      if (!isFulfill) throw new Error(Messages.error3);
+
+      const loginInput: LoginInput = {
+        memberNick: memberNick,
+        memberPassword: memberPassword,
+      };
+
+      const member = new MemberService();
+
+      const result = await member.login(loginInput);
+      handleLoginClose();
+    } catch (err) {
+      console.log("Error", err);
+      handleLoginClose();
       sweetErrorHandling(err).then();
     }
   };
@@ -131,7 +153,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 sx={{ marginTop: "30px", width: "120px" }}
                 variant="extended"
                 color="primary"
-                onClick={hendlesignupRequest}
+                onClick={hendleSignupRequest}
               >
                 <LoginIcon sx={{ mr: 1 }} />
                 Signup
@@ -184,17 +206,21 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 label="username"
                 variant="outlined"
                 sx={{ my: "10px" }}
+                onChange={hendleUserName}
               />
               <TextField
                 id={"outlined-basic"}
                 label={"password"}
                 variant={"outlined"}
                 type={"password"}
+                onChange={hendlePassword}
+                onKeyDown={hentleSignupKeyDown}
               />
               <Fab
                 sx={{ marginTop: "27px", width: "120px" }}
                 variant={"extended"}
                 color={"primary"}
+                onClick={hendleLoginRequest}
               >
                 <LoginIcon sx={{ mr: 1 }} />
                 Login
