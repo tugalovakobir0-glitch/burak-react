@@ -34,9 +34,10 @@
   background: #3776cc;
   color: #f8f8ff;
 }
-.home-navbar .navbar-container .menu .links .user {
+.home-navbar .navbar-container .menu .links .user-avatar {
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 }
 .home-navbar a {
   text-decoration: none;
@@ -185,9 +186,10 @@
   background: #3776cc;
   color: #f8f8ff;
 }
-.other-navbar .navbar-container .menu .links .user {
+.other-navbar .navbar-container .menu .links .user-avatar {
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 }
 .other-navbar a {
   text-decoration: none;

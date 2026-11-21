@@ -7,6 +7,7 @@ import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { Messages } from "../../../lib/config";
 import { LoginInput, MemberInput } from "../../../lib/types/member";
 import MemberService from "../../services/MemberService";
+import { useGlobals } from "../../hooks/useGlobals";
 
 const ModalImg = styled.img`
   width: 62%;
@@ -30,6 +31,8 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const [memberNick, setMemberNick] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
+
+  const { setAuthMember } = useGlobals();
 
   /** HANDLERS **/
   const hendleUserName = (e: T) => {
@@ -66,6 +69,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       const member = new MemberService();
 
       const result = await member.signup(signupInput);
+      setAuthMember(result);
       handleSignupClose();
     } catch (err) {
       console.log("Error", err);
@@ -86,6 +90,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       const member = new MemberService();
 
       const result = await member.login(loginInput);
+      setAuthMember(result);
       handleLoginClose();
     } catch (err) {
       console.log("Error", err);
