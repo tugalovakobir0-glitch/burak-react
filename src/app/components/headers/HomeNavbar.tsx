@@ -42,11 +42,10 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     hentleLogoutClick,
     hentleCloseLogout,
     hentleLogoutRequest,
+
     anchorEl,
   } = props;
   const { authMember } = useGlobals();
-  const [count, setCount] = useState<number>(0);
-  const [value, setValue] = useState<boolean>(true);
 
   return (
     <div className="home-navbar">
