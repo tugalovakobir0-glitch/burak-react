@@ -36,7 +36,7 @@ export default function PausedOrders() {
                       <img src={imagePath} className={"order-dish-img"} />
                       <p className={"title-dish"}>{product.productName}</p>
                       <Box className={"price-box"}>
-                        <p>$${item.itemPrice}</p>
+                        <p>${item.itemPrice}</p>
                         <img src={"/icons/close.svg"} />
                         <p>{item.itemQuantity}</p>
                         <img src={"/icons/pause.svg"} />
