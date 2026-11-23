@@ -25,7 +25,7 @@ interface BacketProps {
 
 export default function Basket(props: BacketProps) {
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
-  const { authMember } = useGlobals();
+  const { authMember, setOrderBuilder } = useGlobals();
   const history = useHistory();
   const itemPrice: number = cartItems.reduce(
     (a: number, b: CartItem) => a + b.price * b.quantity,
@@ -55,6 +55,7 @@ export default function Basket(props: BacketProps) {
 
       onDeleteAll();
       history.push("/orders");
+      setOrderBuilder(new Date());
     } catch (err) {
       console.log(err);
       sweetErrorHandling(err).then();

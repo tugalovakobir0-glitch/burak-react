@@ -6,18 +6,50 @@ import moment from "moment";
 import { createSelector, Dispatch } from "@reduxjs/toolkit";
 import { retrieveProcessOrder } from "./selector";
 import { useSelector } from "react-redux";
-import { OrderItem } from "../../../lib/types/order";
+import { OrderItem, OrderUpdateInput } from "../../../lib/types/order";
 import { Product } from "../../../lib/types/products";
-import { serverApi } from "../../../lib/config";
+import { Messages, serverApi } from "../../../lib/config";
+import { useGlobals } from "../../hooks/useGlobals";
+import { T } from "../../../lib/types/common";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/OrderService";
+import { sweetErrorHandling } from "../../../lib/sweetAlert";
 
 /**REDUX &  SELECTOR */
 const processOrdersRetriever = createSelector(
   retrieveProcessOrder,
   (processOrder) => ({ processOrder }),
 );
-
-export default function ProcessOrders() {
+interface OrderProcessProps {
+  setValue: (value: string) => void;
+}
+export default function ProcessOrders(props: OrderProcessProps) {
+  const { authMember, setOrderBuilder } = useGlobals();
+  const { setValue } = props;
   const { processOrder } = useSelector(processOrdersRetriever);
+
+  /** Handler  **/
+  const fineshedOrderHendler = async (e: T) => {
+    try {
+      if (!authMember) throw new Error(Messages.error2);
+      // PAYMENT PROCESS
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.FINISH,
+      };
+      const confirmation = window.confirm("Have you received your order?");
+      if (confirmation) {
+        const order = new OrderService();
+        await order.updateOrder(input);
+        setValue("3");
+        setOrderBuilder(new Date());
+      }
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
   return (
     <TabPanel value={"2"}>
       <Stack>
@@ -66,7 +98,12 @@ export default function ProcessOrders() {
                 <p className={"data-compl"}>
                   {moment().format("YY-MM-DD HH:mm")}
                 </p>
-                <Button variant="contained" className={"verify-button"}>
+                <Button
+                  value={order._id}
+                  variant="contained"
+                  className={"verify-button"}
+                  onClick={fineshedOrderHendler}
+                >
                   Verify to Fulfil
                 </Button>
               </Box>

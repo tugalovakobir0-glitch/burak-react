@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
+import moment from "moment";
 import { createSelector } from "@reduxjs/toolkit";
 import { retrieveFineshedOrder } from "./selector";
 import { useSelector } from "react-redux";
@@ -23,14 +24,16 @@ export default function FinishedOrders() {
             <Box key={order._id} className={"order-main-box"}>
               <Box className={"order-box-scroll"}>
                 {order.orderItems.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
+                  const product: Product | undefined = order.productData.filter(
                     (ele: Product) => item.productId === ele._id,
                   )[0];
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const imagePath = product?.productImages?.[0]
+                    ? `${serverApi}/${product.productImages[0]}`
+                    : "/icons/noimage-list.svg";
                   return (
                     <Box key={item._id} className={"orders-name-price"}>
                       <img src={imagePath} className={"order-dish-img"} />
-                      <p className={"title-dish"}>{product.productName}</p>
+                      <p className={"title-dish"}>{product?.productName || "Product"}</p>
                       <Box className={"price-box"}>
                         <p>${item.itemPrice}</p>
                         <img src={"/icons/close.svg"} />
@@ -59,6 +62,9 @@ export default function FinishedOrders() {
                   <p>Total</p>
                   <p>${order.orderTotal}</p>
                 </Box>
+                <p className={"data-compl"}>
+                  {moment(order.updatedAt).format("YY-MM-DD HH:mm")}
+                </p>
               </Box>
             </Box>
           );
